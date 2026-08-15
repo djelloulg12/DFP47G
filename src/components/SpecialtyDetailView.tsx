@@ -434,6 +434,11 @@ export const SpecialtyDetailView: React.FC<SpecialtyDetailViewProps> = ({
                   src={profile.imageUrl}
                   alt={profile.imageAlt || specialty.title}
                   referrerPolicy="no-referrer"
+                  loading="eager"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.style.display = 'none';
+                  }}
                   className="w-full h-48 sm:h-52 object-cover object-center transition duration-300 group-hover:scale-103"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-3.5">

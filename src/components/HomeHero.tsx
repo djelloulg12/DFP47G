@@ -7,9 +7,10 @@ import {
 import { SpecialtyItem } from '../types';
 import { DEGREES_INFO, TRAINING_MODES_INFO } from '../data/metadata';
 import { getSpecialtyDetailedProfile } from '../data/specialtyProfiles';
+import heroImg from '../assets/images/hero_trainees_collaboration_1786780228879.jpg';
 
 // Collaboration Hero Image
-const HERO_IMAGE = '/src/assets/images/hero_trainees_collaboration_1786780228879.jpg';
+const HERO_IMAGE = heroImg;
 
 interface HomeHeroProps {
   onExploreCatalog: () => void;
@@ -111,6 +112,11 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
                 src={HERO_IMAGE}
                 alt="متكونون ومتربصون في ورشة التكوين المهني بغرداية"
                 referrerPolicy="no-referrer"
+                loading="eager"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.style.display = 'none';
+                }}
                 className="w-full h-72 sm:h-80 object-cover object-center transition duration-500 group-hover:scale-103"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-4">
@@ -262,6 +268,14 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
                       src={profile.imageUrl || HERO_IMAGE}
                       alt={profile.imageAlt || spec.title}
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        target.style.display = 'none';
+                        if (target.parentElement) {
+                          target.parentElement.classList.add('bg-gradient-to-tr', 'from-emerald-950', 'to-teal-800');
+                        }
+                      }}
                       className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent flex items-end justify-between p-3.5">

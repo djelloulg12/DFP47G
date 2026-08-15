@@ -47,6 +47,14 @@ export const SpecialtyCard: React.FC<SpecialtyCardProps> = ({
               src={profile.imageUrl}
               alt={profile.imageAlt || specialty.title}
               referrerPolicy="no-referrer"
+              loading="lazy"
+              onError={(e) => {
+                const target = e.currentTarget;
+                target.style.display = 'none';
+                if (target.parentElement) {
+                  target.parentElement.classList.add('bg-gradient-to-tr', 'from-emerald-950', 'to-teal-800');
+                }
+              }}
               className="w-full h-full object-cover object-center transition duration-300 group-hover:scale-105"
             />
           ) : (

@@ -1,5 +1,15 @@
 import { DegreeLevel, SectorCategory } from '../types';
 
+import hseImg from '../assets/images/hse_officer_work_1786779308954.jpg';
+import biomedicalImg from '../assets/images/biomedical_tech_work_1786779324973.jpg';
+import topographyImg from '../assets/images/surveyor_topographer_1786779336433.jpg';
+import automechImg from '../assets/images/automech_diagnostic_1786781034384.jpg';
+import solarImg from '../assets/images/solar_energy_tech_1786780995430.jpg';
+import informaticsImg from '../assets/images/informatics_dev_lab_1786781012475.jpg';
+import electricityImg from '../assets/images/ind_electrician_1786781049783.jpg';
+import fashionImg from '../assets/images/fashion_tailoring_1786781071693.jpg';
+import agricultureImg from '../assets/images/agri_food_tech_1786781085931.jpg';
+
 export interface SpecialtyProfile {
   title: string;
   overview: string; // نبذة وتعريف التخصص
@@ -16,15 +26,15 @@ export interface SpecialtyProfile {
 
 // Authentic vocational trade photos matching actual Algerian workshop environments
 export const TRADE_IMAGES = {
-  HSE: '/src/assets/images/hse_officer_work_1786779308954.jpg',
-  BIOMEDICAL: '/src/assets/images/biomedical_tech_work_1786779324973.jpg',
-  TOPOGRAPHY: '/src/assets/images/surveyor_topographer_1786779336433.jpg',
-  AUTOMECHATRONICS: '/src/assets/images/automech_diagnostic_1786781034384.jpg',
-  SOLAR: '/src/assets/images/solar_energy_tech_1786780995430.jpg',
-  INFORMATICS: '/src/assets/images/informatics_dev_lab_1786781012475.jpg',
-  ELECTRICITY: '/src/assets/images/ind_electrician_1786781049783.jpg',
-  FASHION: '/src/assets/images/fashion_tailoring_1786781071693.jpg',
-  AGRICULTURE: '/src/assets/images/agri_food_tech_1786781085931.jpg',
+  HSE: hseImg,
+  BIOMEDICAL: biomedicalImg,
+  TOPOGRAPHY: topographyImg,
+  AUTOMECHATRONICS: automechImg,
+  SOLAR: solarImg,
+  INFORMATICS: informaticsImg,
+  ELECTRICITY: electricityImg,
+  FASHION: fashionImg,
+  AGRICULTURE: agricultureImg,
 };
 
 // Map of detailed profiles by specialty keywords or title
