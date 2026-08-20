@@ -8,16 +8,18 @@ export type DegreeLevel =
   | 'CFPS'; // شهادة نهاية الطور الأول للتخصص
 
 export type TrainingMode =
-  | 'residential' // حضوري (إقامي)
-  | 'apprenticeship' // تمهين
-  | 'evening' // دروس مسائية
-  | 'qualifying_initial' // تكوين تأهيلي أولي
-  | 'bridging' // معابر
-  | 'homemakers' // المرأة الماكثة في البيت
-  | 'rural' // وسط ريفي
-  | 'unemployment_grant' // منحة البطالة
-  | 'contractual' // تكوين تعاقدي
-  | 'vocational_education'; // تعليم مهني
+  | 'residential' // حضوري أولي (إقامي)
+  | 'apprenticeship' // تكوين عن طريق التمهين
+  | 'evening' // الدروس المسائية
+  | 'qualifying_initial' // تأهيلي أولي
+  | 'bridging' // التكوين عن طريق المعابر
+  | 'homemakers' // تكوين المرأة الماكثة في البيت
+  | 'rural' // فرع في الوسط الريفي
+  | 'unemployment_grant' // تكوين المستفيدين من منحة البطالة
+  | 'contractual' // التكوين التعاقدي
+  | 'vocational_education' // التعليم المهني
+  | 'distance' // التكوين عن بعد
+  | 'free_candidate'; // المترشحين الأحرار
 
 export type Municipality =
   | 'غرداية'
@@ -31,20 +33,27 @@ export type Municipality =
   | 'سبسب'
   | 'واد نشو'
   | 'السوارق'
-  | 'القمقوم';
+  | 'القمقوم'
+  | 'المنيعة'
+  | 'حاسي الفحل'
+  | 'حاسي القارة';
 
 export type SectorCategory =
-  | 'informatics_telecom' // إعلام آلي ورقمنة واتصالات
-  | 'industry_electricity' // صناعة وكهرباء وإلكترونيك
-  | 'mechanics_automotive' // ميكانيك وهياكل ومحركات
-  | 'construction_public_works' // بناء وأشغال عمومية وطوبوغرافيا
-  | 'agriculture_environment' // فِلاحة، بيئة، إنتاج حيواني وغذائي
-  | 'crafts_textiles' // صناعة تقليدية، خياطة وطرز وأزياء
-  | 'tourism_hospitality' // فندقة وسياحة وإطعام
-  | 'administration_management' // إدارة، أمانة، تجارة وموارد بشرية
-  | 'personal_care_services' // حلاقة وتجميل وعناية شخصية
-  | 'hygiene_security_environment' // أمن ونظافة وبيئة (HSE) ووقاية
-  | 'renewable_energy'; // طاقات متجددة وترصيص صحي
+  | 'informatics_telecom' // إعلام آلي، الرقمنة والإتصالات
+  | 'industry_electricity' // الكهرباء - الإلكترونيك - طاقوية
+  | 'mechanics_automotive' // ميكانيك المحركات والآليات
+  | 'construction_public_works' // البناء والأشغال العمومية
+  | 'agriculture_environment' // الفلاحة وصناعة الأغذية الزراعية ومهن المياه والبيئة
+  | 'crafts_textiles' // النسيج والألبسة والحرف التقليدية
+  | 'tourism_hospitality' // الفندقة، الإطعام والسياحة
+  | 'administration_management' // تقنيات الإدارة والتسيير
+  | 'personal_care_services' // مهن الخدمات (حلاقة، طفولة، تجميل)
+  | 'hygiene_security_environment' // النظافة، الأمن والبيئة (HSE)
+  | 'renewable_energy' // الطاقات المتجددة والتبريد والترصيص الصحي
+  | 'metal_construction' // الإنشاءات المعدنية
+  | 'wood_furniture' // الخشب والتأثيث
+  | 'graphic_arts' // الفنون والصناعة المطبعية والسمعي البصري
+  | 'chemical_plastics'; // الكيمياء الصناعية والبلاستيكية
 
 export type InstitutionType =
   | 'INSFP' // معهد وطني متخصص في التكوين المهني
@@ -60,15 +69,26 @@ export interface Institution {
   municipality: Municipality;
   isPrivate: boolean;
   address?: string;
+  phone?: string;
+  fax?: string;
+  email?: string;
+  distanceFromWilayaCenterKm?: number;
+  boardingCapacity?: number; // طاقة الاستيعاب داخلي
+  semiBoardingCapacity?: number; // طاقة الاستيعاب نصف داخلي
   description?: string;
+  officialCode?: string;
 }
 
 export interface SpecialtyItem {
   id: string;
+  offerCode?: string; // رمز العرض (e.g. 284504)
+  specialtyCode?: string; // رمز التخصص (e.g. INT01Q, BTP0706)
+  sectorCode?: string; // رمز الشعبة (e.g. INT, BTP, ELE)
   title: string;
+  titleFr?: string;
   degree: DegreeLevel;
   degreeLabel: string;
-  degreeLevelNum: number; // 1 to 5
+  degreeLevelNum: number; // 1 to 5 (0 for CQP)
   trainingMode: TrainingMode;
   trainingModeLabel: string;
   institutionId: string;
@@ -76,8 +96,14 @@ export interface SpecialtyItem {
   municipality: Municipality;
   sector: SectorCategory;
   sectorLabel: string;
-  requiredLevel: string; // e.g. "3 ثانوي", "4 متوسط", "بدون مستوى"
-  duration: string; // e.g. "30 شهر", "24 شهر", "6 أشهر"
+  sectorLabelFr?: string;
+  requiredLevel: string; // e.g. "الثالثة ثانوي (3AS)", "الرابعة متوسط (4AM)"
+  minAge?: number;
+  maxAge?: number;
+  hasBoarding?: boolean; // توفر النظام الداخلي
+  startDate?: string;
+  endDate?: string;
+  duration: string; // e.g. "30 شهراً", "24 شهراً", "6 أشهر"
   description?: string;
   keywords?: string[];
 }
@@ -97,7 +123,10 @@ export interface DegreeMetadata {
 export interface TrainingModeMetadata {
   id: TrainingMode;
   name: string;
+  nameFr?: string;
   iconName: string;
+  minAge?: number;
+  maxAge?: number;
   description: string;
   badgeColor: string;
 }
@@ -105,6 +134,8 @@ export interface TrainingModeMetadata {
 export interface SectorMetadata {
   id: SectorCategory;
   name: string;
+  nameFr?: string;
+  code?: string;
   iconName: string;
   color: string;
 }

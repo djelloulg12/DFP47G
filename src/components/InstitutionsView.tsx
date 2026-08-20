@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building, MapPin, Award, Search, CheckCircle2, ChevronDown, ChevronUp, Sparkles, ExternalLink } from 'lucide-react';
+import { Building, MapPin, Award, Search, CheckCircle2, ChevronDown, ChevronUp, Sparkles, ExternalLink, Phone, Mail, BedDouble, Navigation, Hash } from 'lucide-react';
 import { INSTITUTIONS_LIST } from '../data/metadata';
 import { SPECIALTIES_DATA } from '../data/specialties';
 import { Institution, SpecialtyItem } from '../types';
@@ -17,6 +17,8 @@ export const InstitutionsView: React.FC<InstitutionsViewProps> = ({ onSelectSpec
     const matchesSearch =
       inst.name.toLowerCase().includes(instSearch.toLowerCase()) ||
       inst.municipality.toLowerCase().includes(instSearch.toLowerCase()) ||
+      (inst.address && inst.address.toLowerCase().includes(instSearch.toLowerCase())) ||
+      (inst.officialCode && inst.officialCode.toLowerCase().includes(instSearch.toLowerCase())) ||
       (inst.description && inst.description.toLowerCase().includes(instSearch.toLowerCase()));
 
     const matchesType =
@@ -30,7 +32,10 @@ export const InstitutionsView: React.FC<InstitutionsViewProps> = ({ onSelectSpec
   });
 
   const getSpecialtiesForInst = (instName: string) => {
-    return SPECIALTIES_DATA.filter((s) => s.institutionName === instName);
+    return SPECIALTIES_DATA.filter((s) => 
+      s.institutionName === instName ||
+      (s.institutionName && s.institutionName.includes(instName.split(' ')[0]))
+    );
   };
 
   const toggleExpand = (id: string) => {
@@ -45,10 +50,10 @@ export const InstitutionsView: React.FC<InstitutionsViewProps> = ({ onSelectSpec
           <div>
             <h2 className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
               <Building className="w-5 h-5 text-indigo-600" />
-              <span>مؤسسات ومراكز التكوين والتعليم المهني بولاية غرداية</span>
+              <span>دليل المؤسسات والمراكز التكوينية بولاية غرداية</span>
             </h2>
             <p className="text-xs text-slate-500">
-              دليل المعاهد المتخصصة، مراكز CFPA، والمؤسسات الخاصة المعتمدة عبر بلديات الولاية
+              دليل المعاهد المتخصصة، مراكز CFPA، والمؤسسات الخاصة المعتمدة مع أرقام الهواتف والطاقة الاستيعابية
             </p>
           </div>
 
@@ -57,7 +62,7 @@ export const InstitutionsView: React.FC<InstitutionsViewProps> = ({ onSelectSpec
               type="text"
               value={instSearch}
               onChange={(e) => setInstSearch(e.target.value)}
-              placeholder="ابحث عن مركز أو بلدية..."
+              placeholder="ابحث بالاسم، البلدية، الرمز (4725)..."
               className="w-full bg-gray-50 text-slate-800 text-xs pl-3 pr-9 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-medium"
             />
             <Search className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2" />
@@ -132,28 +137,36 @@ export const InstitutionsView: React.FC<InstitutionsViewProps> = ({ onSelectSpec
             >
               <div>
                 {/* Header sub-card */}
-                <div className="p-4 bg-slate-50 border-b border-gray-100 flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
-                        inst.isPrivate
-                          ? 'bg-amber-50 text-amber-700 border-amber-200'
+                <div className="p-4 bg-slate-50 border-b border-gray-100 flex justify-between items-start gap-2">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+                          inst.isPrivate
+                            ? 'bg-amber-50 text-amber-700 border-amber-200'
+                            : inst.type === 'INSFP'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                            : inst.type === 'IEP'
+                            ? 'bg-teal-50 text-teal-700 border-teal-200'
+                            : 'bg-blue-50 text-blue-700 border-blue-200'
+                        }`}
+                      >
+                        {inst.isPrivate
+                          ? 'خاص معتمد'
                           : inst.type === 'INSFP'
-                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                          ? 'معهد وطني'
                           : inst.type === 'IEP'
-                          ? 'bg-teal-50 text-teal-700 border-teal-200'
-                          : 'bg-blue-50 text-blue-700 border-blue-200'
-                      }`}
-                    >
-                      {inst.isPrivate
-                        ? 'خاص معتمد'
-                        : inst.type === 'INSFP'
-                        ? 'معهد وطني'
-                        : inst.type === 'IEP'
-                        ? 'تعليم مهني'
-                        : 'مركز عمومي'}
-                    </span>
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900">
+                          ? 'تعليم مهني'
+                          : 'مركز عمومي'}
+                      </span>
+                      {inst.officialCode && (
+                        <span className="text-[10px] bg-slate-200/80 text-slate-700 px-1.5 py-0.5 rounded font-mono font-bold flex items-center gap-0.5">
+                          <Hash className="w-2.5 h-2.5" />
+                          {inst.officialCode}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
                       {inst.name}
                     </h3>
                   </div>
@@ -164,14 +177,50 @@ export const InstitutionsView: React.FC<InstitutionsViewProps> = ({ onSelectSpec
                   </div>
                 </div>
 
-                <div className="p-4">
+                <div className="p-4 space-y-3">
+                  {/* Detailed contact and capacity info */}
+                  {(inst.phone || inst.address || inst.email || (inst.boardingCapacity && inst.boardingCapacity > 0)) && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50/70 p-2.5 rounded-xl border border-gray-150">
+                      {inst.address && (
+                        <div className="sm:col-span-2 flex items-start gap-1.5 text-slate-600">
+                          <MapPin className="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0" />
+                          <span className="line-clamp-2">{inst.address}</span>
+                        </div>
+                      )}
+                      {inst.phone && (
+                        <div className="flex items-center gap-1.5 text-slate-700">
+                          <Phone className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                          <span className="font-mono dir-ltr">{inst.phone}</span>
+                        </div>
+                      )}
+                      {inst.email && (
+                        <div className="flex items-center gap-1.5 text-slate-700 truncate">
+                          <Mail className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                          <span className="truncate">{inst.email}</span>
+                        </div>
+                      )}
+                      {inst.distanceFromWilayaCenterKm !== undefined && (
+                        <div className="flex items-center gap-1.5 text-slate-600">
+                          <Navigation className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                          <span>البعد: {inst.distanceFromWilayaCenterKm} كلم</span>
+                        </div>
+                      )}
+                      {(inst.boardingCapacity !== undefined && inst.boardingCapacity > 0) && (
+                        <div className="flex items-center gap-1.5 text-slate-600">
+                          <BedDouble className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                          <span>داخلي: {inst.boardingCapacity} سرير</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {inst.description && (
-                    <p className="text-xs text-slate-600 mb-3 bg-gray-50 p-2.5 rounded-xl border border-gray-100 leading-relaxed">
+                    <p className="text-xs text-slate-600 bg-gray-50 p-2.5 rounded-xl border border-gray-100 leading-relaxed">
                       {inst.description}
                     </p>
                   )}
 
-                  <div className="text-xs font-semibold text-slate-600 mb-2 flex items-center justify-between">
+                  <div className="text-xs font-semibold text-slate-600 flex items-center justify-between">
                     <span>التخصصات المتاحة بالمركز:</span>
                     <span className="text-indigo-700 font-bold bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded text-[11px]">
                       {specialties.length} تخصص
@@ -204,11 +253,12 @@ export const InstitutionsView: React.FC<InstitutionsViewProps> = ({ onSelectSpec
                 </div>
               </div>
 
-              {specialties.length > 3 && (
-                <div className="p-3 bg-slate-50/50 border-t border-gray-100">
+              {/* Card Footer */}
+              <div className="p-3 bg-slate-50/50 border-t border-gray-100 flex items-center justify-between">
+                {specialties.length > 3 ? (
                   <button
                     onClick={() => toggleExpand(inst.id)}
-                    className="w-full text-xs font-bold text-indigo-700 hover:text-indigo-800 flex items-center justify-center gap-1 transition"
+                    className="text-xs font-bold text-indigo-700 hover:text-indigo-800 flex items-center gap-1 transition"
                   >
                     {isExpanded ? (
                       <>
@@ -217,13 +267,25 @@ export const InstitutionsView: React.FC<InstitutionsViewProps> = ({ onSelectSpec
                       </>
                     ) : (
                       <>
-                        <span>عرض باقي التخصصات ({specialties.length - 3} تخصص إضافي)</span>
+                        <span>عرض كل التخصصات ({specialties.length})</span>
                         <ChevronDown className="w-3.5 h-3.5" />
                       </>
                     )}
                   </button>
-                </div>
-              )}
+                ) : (
+                  <span className="text-[11px] text-slate-400">مؤسسة رسمية معتمدة</span>
+                )}
+
+                <a
+                  href="https://takwin.dz/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-xs bg-white hover:bg-slate-900 hover:text-white border border-gray-200 px-2.5 py-1 rounded-lg font-bold text-slate-700 transition flex items-center gap-1"
+                >
+                  <span>منصة مهنتي</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
             </div>
           );
         })}
