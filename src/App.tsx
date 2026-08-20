@@ -157,7 +157,7 @@ export default function App() {
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-6 bg-emerald-600 rounded-full"></span>
                         <h2 className="text-xl sm:text-2xl font-black text-slate-900">
-                          أحدث وأهم تخصصات الدورة 2024 / 2025
+                          أحدث وأهم تخصصات الدورة 2026 / 2027
                         </h2>
                       </div>
                       <p className="text-xs sm:text-sm text-slate-500 mt-1">

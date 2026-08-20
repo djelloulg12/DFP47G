@@ -32,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span>الجمهورية الجزائرية الديمقراطية الشعبية — وزارة التكوين والتعليم المهنيين</span>
         </div>
         <div className="hidden sm:flex items-center gap-3 text-emerald-300">
-          <span className="bg-white/10 px-2.5 py-0.5 rounded-full text-[11px]">دورة التكوين 2024 / 2025</span>
+          <span className="bg-white/10 px-2.5 py-0.5 rounded-full text-[11px]">دورة التكوين 2026 / 2027</span>
           <span>•</span>
           <span>مديرية التكوين المهني لولاية غرداية</span>
         </div>

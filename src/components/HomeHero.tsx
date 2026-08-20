@@ -46,7 +46,7 @@ export const HomeHero: React.FC<HomeHeroProps> = ({
           <div className="lg:col-span-7 space-y-5 text-right">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-3.5 py-1 rounded-full text-xs font-semibold text-emerald-200">
               <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
-              <span>دورة التكوين والتعليم المهنيين — ولاية غرداية</span>
+              <span>دورة التكوين والتعليم المهنيين 2026 / 2027 — ولاية غرداية</span>
             </div>
 
             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight tracking-tight">
